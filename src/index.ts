@@ -1,0 +1,1 @@
+export { nunjucksResourceRenderer } from './nunjucks-resource-renderer';
