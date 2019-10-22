@@ -39,13 +39,12 @@
     "eslint": "^6.5.1",
     "leasot": "^8.2.0",
     "nunjucks": "~3.2.0",
-    "dotenv": "~8.1.0"
+    "dotenv": "~8.1.0",
+    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.0"
   },
   "peerDependencies": {
     "nunjucks": "~3.2.0",
-    "dotenv": "~8.1.0"
-  },
-  "dependencies": {
-    "resource-decorator": "https://github.com/epandco/resource-decorator"
+    "dotenv": "~8.1.0",,
+    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.0"
   }
 }
