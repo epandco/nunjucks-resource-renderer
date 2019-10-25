@@ -39,7 +39,7 @@ class NunjucksResourceRenderer implements ResourceRenderer {
   }
 
   async unauthorized(): Promise<string> {
-    const template = nunjucks.render(config.nunjucksUnexpectedErrorTemplate);
+    const template = nunjucks.render(config.nunjucksUnauthorized);
     return template;
   }
 
