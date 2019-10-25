@@ -1,6 +1,6 @@
 {
   "name": "nunjucks-reource-renderer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Used to render a resource with nunjucks",
   "scripts": {
     "prepare": "npm run build",
