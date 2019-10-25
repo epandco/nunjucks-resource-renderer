@@ -41,11 +41,11 @@
     "leasot": "^8.2.0",
     "nunjucks": "~3.2.0",
     "dotenv": "~8.1.0",
-    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.0"
+    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.1"
   },
   "peerDependencies": {
     "nunjucks": "~3.2.0",
     "dotenv": "~8.1.0",
-    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.0"
+    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.1"
   }
 }
