@@ -1,5 +1,5 @@
 {
-  "name": "nunjucks-reource-renderer",
+  "name": "nunjucks-resource-renderer",
   "version": "1.0.1",
   "description": "Used to render a resource with nunjucks",
   "scripts": {
@@ -40,12 +40,10 @@
     "eslint": "^6.5.1",
     "leasot": "^8.2.0",
     "nunjucks": "~3.2.0",
-    "dotenv": "~8.1.0",
-    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.1"
+    "resource-decorator": "https://github.com/epandco/resource-decorator#2.0.1"
   },
   "peerDependencies": {
     "nunjucks": "~3.2.0",
-    "dotenv": "~8.1.0",
-    "resource-decorator": "https://github.com/epandco/resource-decorator#1.0.1"
+    "resource-decorator": "https://github.com/epandco/resource-decorator#2.0.1"
   }
 }

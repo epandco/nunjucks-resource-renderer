@@ -1,49 +1,84 @@
 import * as nunjucks from 'nunjucks';
-import * as config from './config';
 import * as path from 'path';
 
-import { ResourceRenderer, ResourceTemplateContent, ResourceError } from 'resource-decorator';
+import { ResourceRenderer, ApiResponse, TemplateResponse, ResourceError } from 'resource-decorator';
 
 
-nunjucks.configure(path.resolve(config.nunjucksBaseTemplatePath), { autoescape: true });
 
-class NunjucksResourceRenderer implements ResourceRenderer {
-  contentType: string = 'text/html';
+export class NunjucksResourceRenderer implements ResourceRenderer {
+  public contentType: string = 'text/html';
 
-  async ok(model?: ResourceTemplateContent): Promise<string> {
+  private context?: object;
+  private notFoundTemplate?: string;
+  private expectedErrorTemplate?: string;
+  private fatalErrorTemplate?: string;
+  private unauthorizedTemplate?: string;
+
+  constructor(
+    baseTemplatePath: string,
+    context?: object, 
+    notFoundTemplate?: string,
+    expectedErrorTemplate?: string, 
+    fatalErrorTemplate?: string,
+    unauthorizedTemplate?: string
+  ) {
+    this.context = context;
+    this.notFoundTemplate = notFoundTemplate;
+    this.expectedErrorTemplate = expectedErrorTemplate;
+    this.fatalErrorTemplate = fatalErrorTemplate;
+    this.unauthorizedTemplate = unauthorizedTemplate;
+
+    nunjucks.configure(path.resolve(baseTemplatePath), { autoescape: true });
+  }
+
+  async ok(model?: ApiResponse | TemplateResponse): Promise<string> {
     if (!model) {
       throw Error('Model must be set');
     }
 
-    if (!(model instanceof ResourceTemplateContent)) {
+    if (!(model instanceof TemplateResponse)) {
       throw Error(`This model must be an isntance of ResourceTemplateContent. Currently the type is ${typeof model}`);
     }
 
-    const template = nunjucks.render(model.template, model.content as object);
+    // In case of collisions the context should win
+    const modelPlusContext = { ...model, ...this.context };
+    const template = nunjucks.render(model.template, modelPlusContext);
     return template;
   }
 
   async notFound(): Promise<string> {
-    const template = nunjucks.render(config.nunjucksNotFoundTemplate);
+    if (!this.notFoundTemplate) {
+      throw new Error('No template provided for not found errors.');
+    }
+
+    const template = nunjucks.render(this.notFoundTemplate);
     return template;
   }
 
   async expectedError(err: ResourceError): Promise<string> {
-    const template = nunjucks.render(config.nunjucksExpectedErrorTemplate, err);
+    if (!this.expectedErrorTemplate) {
+      throw new Error('No template provided for expected errors.');
+    }
+    const template = nunjucks.render(this.expectedErrorTemplate, err);
     return template;
+
   }
 
-  async unexpectedError(msg: string): Promise<string> {
-    const template = nunjucks.render(config.nunjucksUnexpectedErrorTemplate, { msg: msg });
+  async fatalError(msg: string): Promise<string> {
+    if (!this.fatalErrorTemplate) {
+      throw new Error('No template provided for fatal errors.');
+    }
+
+    const template = nunjucks.render(this.fatalErrorTemplate, { msg: msg });
     return template;
   }
 
   async unauthorized(): Promise<string> {
-    const template = nunjucks.render(config.nunjucksUnauthorizedTemplate);
+    if (!this.unauthorizedTemplate) {
+      throw new Error('No template provided unauthorized errors.');
+    }
+
+    const template = nunjucks.render(this.unauthorizedTemplate);
     return template;
   }
-
 }
-
-const nunjucksResourceRenderer = new NunjucksResourceRenderer();
-export { nunjucksResourceRenderer };
